@@ -11,18 +11,18 @@ class Node {
     * Returns the node, if found; else undefined. Uses recursion. */
 
     findRecursively(val) {
-        if (this === null){
-            return
+        if (this === null) {
+            return;
         }
 
         if (this.val === val) {
-                return this;
+            return this;
         }
-        else if (val < this.val){
-            return this.findRecursively.call(this.left, val)
+        else if (val < this.val) {
+            return this.findRecursively.call(this.left, val);
         }
-        else{
-            return this.findRecursively.call(this.right, val)
+        else {
+            return this.findRecursively.call(this.right, val);
         }
     }
 
@@ -59,21 +59,54 @@ class Node {
     * Returns an array of visited nodes. */
 
     dfsPreOrder() {
+        let visitedNodes = [];
 
+        function _dfsPre(node) {
+            if (node === null) return;
+
+            visitedNodes.push(node.val);
+            _dfsPre(node.left);
+            _dfsPre(node.right);
+        }
+
+        _dfsPre(this);
+        return visitedNodes;
     }
 
     /** dfsInOrder(): Traverse from the invoking node using in-order DFS.
     * Returns an array of visited nodes. */
 
     dfsInOrder() {
+        let visitedNodes = [];
 
+        function _dfsPre() {
+            if (this === null) return;
+
+            _dfsPre.call(this.left);
+            visitedNodes.push(this.val);
+            _dfsPre.call(this.right);
+        }
+
+        _dfsPre.call(this);
+        return visitedNodes;
     }
 
     /** dfsPostOrder(): Traverse from the invoking node using post-order DFS.
     * Returns an array of visited nodes. */
 
     dfsPostOrder() {
+        let visitedNodes = [];
 
+        function _dfsPre() {
+            if (this === null) return;
+
+            _dfsPre.call(this.left);
+            _dfsPre.call(this.right);
+            visitedNodes.push(this.val);
+        }
+
+        _dfsPre.call(this);
+        return visitedNodes;
     }
 
 }
@@ -149,7 +182,7 @@ class BinarySearchTree {
                 ? current.left
                 : current.right;
         }
-        return
+        return;
     }
 
 
@@ -157,10 +190,10 @@ class BinarySearchTree {
      * Returns the node, if found; else undefined. Uses recursion. */
 
     findRecursively(val) {
-        if (this.root === null){
+        if (this.root === null) {
             return;
         }
-        else{
+        else {
             return this.root.findRecursively(val);
         }
 
@@ -171,28 +204,67 @@ class BinarySearchTree {
      * Returns an array of visited nodes. */
 
     dfsPreOrder() {
-
+        if (this.root === null) {
+            return [];
+        }
+        else {
+            return this.root.dfsPreOrder();
+        }
     }
 
     /** dfsInOrder(): Traverse the BST using in-order DFS.
      * Returns an array of visited nodes. */
 
     dfsInOrder() {
-
+        if (this.root === null) {
+            return [];
+        }
+        else {
+            return this.root.dfsInOrder();
+        }
     }
 
     /** dfsPostOrder(): Traverse the BST using post-order DFS.
      * Returns an array of visited nodes. */
 
     dfsPostOrder() {
-
+        if (this.root === null) {
+            return [];
+        }
+        else {
+            return this.root.dfsPostOrder();
+        }
     }
 
     /** bfs(): Traverse the BST using BFS.
      * Returns an array of visited nodes. */
 
     bfs() {
+        let visitedNodes = [];
+        let toVisitQueue = [];
+        //use a queue to keep track of
 
+        if (this.root === null) {
+            return [];
+        } else {
+            let current = this.root;
+            visitedNodes.push(current.val);
+
+            while (current) {
+                console.log("\n\ncurrentNode:", current)
+                if (current.left) {
+                    visitedNodes.push(current.left.val);
+                    toVisitQueue.push(current.left);
+                }
+                if (current.right) {
+                    visitedNodes.push(current.right.val);
+                    toVisitQueue.push(current.right);
+                }
+                current = toVisitQueue.shift();
+            }
+        }
+
+        return visitedNodes;
     }
 
     /** findSuccessorNode(node): Find and return node with next largest value.
